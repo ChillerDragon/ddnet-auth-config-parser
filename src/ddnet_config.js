@@ -19,11 +19,28 @@ const isCommentOrEmptyLine = (line) => {
   return false
 }
 
+const getCommandArgType = (commandName, argOffset) => {
+  const knownCommands = {
+    auth_add: ['s', 's', 'r']
+  }
+  const cmd = knownCommands[commandName]
+  if (!cmd) {
+    return 's'
+  }
+  return cmd[argOffset]
+}
+
 const splitLineIntoCommand = (line) => {
   const args = []
+  // arg types:
+  // "sep" - meta type spaced separator between arguments
+  // "s" - space separated string
+  // "r" - consume the rest as string ignoring spaces
+  // "i" - integer
   let currentArgType = 'sep'
   let currentQuote = null
   let currentArg = ''
+
   for (let i = 0; i < line.length; i++) {
     const char = line[i]
 
@@ -37,10 +54,10 @@ const splitLineIntoCommand = (line) => {
       if (/\s/.test(char)) {
         continue
       }
-
-      // TODO: instead of assuming all args to be "s"
-      //       lookup some command to arg type mapping
       currentArgType = 's'
+      if (args.length > 0) {
+        currentArgType = getCommandArgType(args[0], args.length - 1)
+      }
 
       // start new quoted arg
       if (char === '"' || char === "'") {
@@ -69,6 +86,10 @@ const splitLineIntoCommand = (line) => {
         continue
       }
 
+      currentArg += char
+    }
+
+    if (currentArgType === 'r') {
       currentArg += char
     }
   }
