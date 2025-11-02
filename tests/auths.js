@@ -19,5 +19,7 @@ assert.deepStrictEqual(auths, [
     username: 'alice',
     role: 'helper',
     password: 'non quoted multi word pass '
-  }
+  },
+  { username: 'foo', role: 'helper', password: 'foo ' },
+  { username: 'foo', role: 'helper', password: 'foo' }
 ])
