@@ -1,8 +1,8 @@
 {
     "name": "ddnet-auth-config-parser",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
-    "main": "index.js",
+    "main": "src/auth_parser.js",
     "devDependencies": {
         "standard": "*",
         "rewire": "^9.0.1"
