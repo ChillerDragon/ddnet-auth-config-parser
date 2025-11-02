@@ -37,6 +37,7 @@ assert.deepStrictEqual(splitLineIntoCommand('foo # bar'), ['foo'])
 assert.deepStrictEqual(splitLineIntoCommand('foo "# bar"'), ['foo', '# bar'])
 assert.deepStrictEqual(splitLineIntoCommand('foo "bar" # comment'), ['foo', 'bar'])
 assert.deepStrictEqual(splitLineIntoCommand('auth_add foo helper multi word pass'), ['auth_add', 'foo', 'helper', 'multi word pass'])
+assert.deepStrictEqual(splitLineIntoCommand('auth_add foo helper "multi word pass"'), ['auth_add', 'foo', 'helper', 'multi word pass'])
 
 assert.equal(getCommandArgType('auth_add', 0), 's')
 assert.equal(getCommandArgType('auth_add', 1), 's')

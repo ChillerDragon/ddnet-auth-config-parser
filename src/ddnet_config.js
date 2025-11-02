@@ -90,6 +90,15 @@ const splitLineIntoCommand = (line) => {
     }
 
     if (currentArgType === 'r') {
+      // matching quote terminates quoted arg
+      if (currentQuote === char) {
+        args.push(currentArg)
+        currentArg = ''
+        currentArgType = 'sep'
+        currentQuote = null
+        continue
+      }
+
       currentArg += char
     }
   }
