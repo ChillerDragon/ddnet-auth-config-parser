@@ -1,7 +1,10 @@
+const path = require('node:path/posix')
 const ddnetConfig = require('./ddnet_config.js')
 
 const getAuthsSync = (configPath) => {
-  const configs = ddnetConfig.loadConfigSync(configPath, true)
+  const configRootDir = path.dirname(configPath)
+  const configName = path.basename(configPath)
+  const configs = ddnetConfig.loadConfigSync(configRootDir, configName, true)
   const auths = []
   configs.forEach((config) => {
     const cmd = config[0]

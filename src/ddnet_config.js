@@ -115,8 +115,8 @@ const splitLineIntoCommand = (line) => {
 }
 
 // load a ddnet autoexec.cfg or autoexec_server.cfg
-const loadConfigSync = (configPath, stripCommentsAndSpaces) => {
-  const data = fs.readFileSync(configPath, 'utf8')
+const loadConfigSync = (configRootDir, configPath, stripCommentsAndSpaces) => {
+  const data = fs.readFileSync(path.join(configRootDir, configPath), 'utf8')
   let lines = []
   data.split('\n').forEach((line) => {
     if (stripCommentsAndSpaces && isCommentOrEmptyLine(line)) {
@@ -124,10 +124,8 @@ const loadConfigSync = (configPath, stripCommentsAndSpaces) => {
     }
     const args = splitLineIntoCommand(line)
     if (args[0] === 'exec') {
-      const baseDir = path.dirname(configPath)
       const execFile = args[1]
-      const subConfigPath = path.join(baseDir, execFile)
-      lines = lines.concat(loadConfigSync(subConfigPath, stripCommentsAndSpaces))
+      lines = lines.concat(loadConfigSync(configRootDir, execFile, stripCommentsAndSpaces))
     }
     lines.push(args)
   })
