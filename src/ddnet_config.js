@@ -1,4 +1,5 @@
 const fs = require('node:fs')
+const path = require('node:path/posix')
 
 class DDNetConfigError extends Error {
   constructor (message, options) {
@@ -116,12 +117,19 @@ const splitLineIntoCommand = (line) => {
 // load a ddnet autoexec.cfg or autoexec_server.cfg
 const loadConfigSync = (configPath, stripCommentsAndSpaces) => {
   const data = fs.readFileSync(configPath, 'utf8')
-  const lines = []
+  let lines = []
   data.split('\n').forEach((line) => {
     if (stripCommentsAndSpaces && isCommentOrEmptyLine(line)) {
       return
     }
-    lines.push(splitLineIntoCommand(line))
+    const args = splitLineIntoCommand(line)
+    if (args[0] === 'exec') {
+      const baseDir = path.dirname(configPath)
+      const execFile = args[1]
+      const subConfigPath = path.join(baseDir, execFile)
+      lines = lines.concat(loadConfigSync(subConfigPath, stripCommentsAndSpaces))
+    }
+    lines.push(args)
   })
   return lines
 }
