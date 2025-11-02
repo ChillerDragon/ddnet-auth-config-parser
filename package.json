@@ -1,0 +1,19 @@
+{
+    "name": "ddnet-auth-config-parser",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "devDependencies": {
+        "standard": "*",
+        "rewire": "^9.0.1"
+    },
+    "scripts": {
+        "lint": "npx standard",
+    	"test": "npx node ./tests/*.js"
+    },
+    "keywords": [],
+    "author": "ChillerDragon",
+    "license": "Unlicense",
+    "dependencies": {
+    }
+}
